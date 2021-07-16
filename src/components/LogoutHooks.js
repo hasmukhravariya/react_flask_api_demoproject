@@ -10,6 +10,7 @@ const LogoutHooks=forwardRef((props, ref)=> {
 
   const onLogoutSuccess = (res) => {
     console.log('Logged out Success');
+    localStorage.clear();
     history.push({
         pathname:  "/"
      });

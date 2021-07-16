@@ -1,9 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal"
+import { useHistory } from "react-router";
 
-const TaskRegister = props => {
-
+function TaskRegister(props){
+  
+  const history = useHistory();
   const[task,setTask]=useState({
     title: '',
     creater: '',
@@ -25,7 +28,7 @@ const TaskRegister = props => {
     console.log(task)
     const new_task = {
       "title": task.title,
-      "creater": task.creater,
+      "creater": props.name,
       "assigned": task.assigned,
       "description": task.description,
       "status": task.status
@@ -44,51 +47,60 @@ const TaskRegister = props => {
             description: '',
             status: 'Open'
           })
-          props.gettasksData()
+          if(props.page==="homePage"){
+            props.gettasksData()
+          }else{
+            history.push("/home")
+          }
         }
         else{
           alert(JSON.stringify(res.data.errors));
         }
       })
     }
-    console.log(props.state)
+    console.log(props.name)
+    console.log(task)
 
     return (
-      <form className="task_form_wrapper" onSubmit={handleSubmit}>
-          <center><h3>Task Form</h3></center>
+      <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal.Body>
+          <form className="task_form_wrapper" onSubmit={handleSubmit}>
+              <center><h3>Task Form</h3></center>
 
-          <div className="form-group">
-              <label>Title</label>
-              <input type="text" name="title" className="form-control" placeholder="Title" onChange={handleInputChange} required/>
-          </div>
+              <div className="form-group">
+                  <label>Title</label>
+                  <input type="text" name="title" className="form-control" placeholder="Title" onChange={handleInputChange} required/>
+              </div>
 
-          <div className="form-group">
-              <label>Creater</label>
-              <input type="text" name="creater" className="form-control" value={props.state.user.name} onChange={handleInputChange} disabled/>
-          </div>
+              <div className="form-group">
+                  <label>Creater</label>
+                  <input type="text" name="creater" className="form-control" value={props.name} onChange={handleInputChange} disabled/>
+              </div>
 
-          <div className="form-group">
-              <label>Assigned</label>
-              <input type="text" name="assigned" className="form-control" placeholder="Assigned" onChange={handleInputChange} required />
-          </div>
+              <div className="form-group">
+                  <label>Assigned</label>
+                  <input type="text" name="assigned" className="form-control" placeholder="Assigned" onChange={handleInputChange} required />
+              </div>
 
-          <div className="form-group">
-              <label>Description</label>
-              <input type="text" name="description" className="form-control" placeholder="Enter Description" onChange={handleInputChange} required />
-          </div>
+              <div className="form-group">
+                  <label>Description</label>
+                  <input type="text" name="description" className="form-control" placeholder="Enter Description" onChange={handleInputChange} required />
+              </div>
 
-          <div className="form-group">
-              <label>Status</label>
-              <select class="browser-default custom-select" name="status" onChange={handleInputChange}>
-                <option value="Open" selected>Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Hold">Hold</option>
-                <option value="Closed">Closed</option>
-              </select>
-          </div>
+              <div className="form-group">
+                  <label>Status</label>
+                  <select class="browser-default custom-select" name="status" onChange={handleInputChange}>
+                    <option value="Open" selected>Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Hold">Hold</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+              </div>
 
-          <button type="submit" className="btn btn-dark btn-lg btn-block">Submit</button>
-      </form>
+              <button type="submit" className="btn btn-dark btn-lg btn-block">Submit</button>
+          </form>
+        </Modal.Body>
+      </Modal>
     );
 }
 

@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage"
-import BootstrapTable from "./components/BootstrapTable"
+import UserProfile from "./components/UserProfile"
 
 const Routes = () => (
   <div>  
@@ -20,8 +20,8 @@ const Routes = () => (
         <Home />
       </Route>
 
-      <Route path="/test">
-        <BootstrapTable />
+      <Route path="/userprofile">
+        <UserProfile />
       </Route>
 
     </Switch>

@@ -12,6 +12,12 @@ function Login() {
   const onSuccess = (res) => {
     console.log('Login Success: currentUser:', res.profileObj);
     refreshTokenSetup(res);
+    const user={
+      email:false,
+      google:true,
+      data:res.profileObj
+    }
+    localStorage.setItem('user', JSON.stringify(user))
     // console.log(this.props)
     history.push({
         pathname:  "/home",

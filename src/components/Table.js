@@ -1,5 +1,4 @@
 import React from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import BTable from "react-bootstrap/Table";
 import {
   useTable,
@@ -16,21 +15,72 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 }
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-// // Define a custom filter filter function!
-// function filterGreaterThan(rows, id, filterValue) {
-//   return rows.filter((row) => {
-//     const rowValue = row.values[id];
-//     return rowValue >= filterValue;
-//   });
-// }
+function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}) {
+  // Calculate the options for filtering
+  // using the preFilteredRows
+  const options = React.useMemo(() => {
+    const options = new Set()
+    preFilteredRows.forEach(row => {
+      options.add(row.values[id])
+    })
+    return [...options.values()]
+  }, [id, preFilteredRows])
 
-// // This is an autoRemove method on the filter function that
-// // when given the new filter value and returns true, the filter
-// // will be automatically removed. Normally this is just an undefined
-// // check, but here, we want to remove the filter if it's not a number
-// filterGreaterThan.autoRemove = (val) => typeof val !== "number";
+  // Render a multi-select box
+  return (
+    <select
+      value={filterValue}
+      onChange={e => {
+        setFilter(e.target.value || undefined)
+      }}
+    >
+      <option value="">All</option>
+      {options.map((option, i) => (
+        <option key={i} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  )
+}
 
-export default function BootstrapTable({ columns,data }) {
+const columns = [
+    {
+      Header: "ID",
+      accessor: "id"
+    },
+    {
+      Header: "Title",
+      accessor: "title"
+    },
+
+    {
+      Header: "Creater",
+      accessor: "creater",
+      Filter: SelectColumnFilter,
+      filter: 'includes',
+    },
+    {
+      Header: "Assigned",
+      accessor: "assigned",
+      Filter: SelectColumnFilter,
+      filter: 'includes',
+    },
+    {
+      Header: "Description",
+      accessor: "description"
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+      Filter: SelectColumnFilter,
+      filter: 'includes',
+    }
+  ];
+
+export default function BootstrapTable({ data }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -90,13 +140,9 @@ export default function BootstrapTable({ columns,data }) {
     usePagination
   );
 
-  // We don't want to render all of the rows for this example, so cap
-  // it for this use case
-  // const firstPageRows = rows.slice(0, 10);
-  // Render the UI for your table
   return (
     <>
-      <tr id="table_filters"className="d-flex justify-content-end">
+      <tr id="table_filters" className="d-flex justify-content-end">
         <th className="filter" >
            Creater: {headerGroups[0].headers[2].render('Filter')}
         </th>
@@ -186,6 +232,7 @@ export default function BootstrapTable({ columns,data }) {
           ))}
         </select>
       </div>
+      <span>&nbsp;&nbsp;</span>
     </>
   );
 }
