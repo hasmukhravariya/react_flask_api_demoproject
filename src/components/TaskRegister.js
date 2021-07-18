@@ -25,7 +25,7 @@ function TaskRegister(props){
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(task)
+    // console.log(task)
     const new_task = {
       "title": task.title,
       "creater": props.name,
@@ -33,7 +33,7 @@ function TaskRegister(props){
       "description": task.description,
       "status": task.status
     };
-    console.log(new_task)
+    // console.log(new_task)
     axios.post(`/api/tasks`,  new_task )
       .then(res => {
         console.log(res);
@@ -58,8 +58,8 @@ function TaskRegister(props){
         }
       })
     }
-    console.log(props.name)
-    console.log(task)
+    // console.log(props.name)
+    // console.log(task)
 
     return (
       <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>

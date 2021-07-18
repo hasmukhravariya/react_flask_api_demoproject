@@ -21,16 +21,14 @@ const NavigationBar = props => {
 
   if(page!=="loginPage"){
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if(loggedInUser.google){
-      image=<img src={loggedInUser.data.imageUrl} alt="Admin" class="rounded-circle" width="150"/>
-      name=loggedInUser.data.name
-      email=loggedInUser.data.email
-    }else if(loggedInUser.email){
+    if( loggedInUser.data.image==null ){
       image=<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150"/>
-      name=loggedInUser.data.name
-      email=loggedInUser.data.email
-      username=loggedInUser.data.username
+    }else{
+      image=<img src={loggedInUser.data.image} alt="Admin" class="rounded-circle" width="150"/>
     }
+    name=loggedInUser.data.name
+    email=loggedInUser.data.email
+    username=loggedInUser.data.username
     gettasksData=props.gettasksData;
   }
 
@@ -102,7 +100,7 @@ const NavigationBar = props => {
         </Navbar.Text>
       </OverlayTrigger>
       <Button variant="secondary" className="margin_sides" onClick={onTaskOpenModal}>Add Task</Button>
-      <DropdownButton menuVariant="dark" id="dropdown-item-button" variant="secondary" alignRight >
+      <DropdownButton id="dropdown-item-button" variant="secondary" title="" alignRight >
         <Dropdown.Item onClick={onTaskOpenModal}>Add Task</Dropdown.Item>
         <Dropdown.Item onClick={viewUser} >View Profile</Dropdown.Item>
         <Dropdown.Divider />

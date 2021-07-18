@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields, validate, ValidationError
 from config import ma
 from models import User
+import phonenumbers
 
 class UserSchema(ma.Schema):
     def validate_email(value):
@@ -17,13 +18,24 @@ class UserSchema(ma.Schema):
         else:
             raise ValidationError("Username not available")
 
+    def validate_phone(value):
+        number=phonenumbers.parse(value, "IN")
+        if phonenumbers.is_valid_number(number):
+            return True
+        else:
+            raise ValidationError("Phone Number is not valid for India")
+
     class Meta:
-        fields = ("id","name", "username", "email", "password")
+        fields = ("id","name", "username", "email", "password", "image", "address", "phone")
     id = fields.String(dump_only=True)
     name = fields.String(required=True, validate=[validate.Length(1,255)])
-    username = fields.String(required=True, validate=[validate_username,validate.Length(min=8,max=30,error="Username length must be between 8 to 20")])
+    username = fields.String(required=False, validate=[validate_username,validate.Length(min=8,max=30,error="Username length must be between 8 to 20")])
     email = fields.Email(required=True, validate=[validate_email,validate.Length(1,255)])
-    password = fields.String(required=True, validate=[validate.Length(min=8,max=20,error="Password length must be between 8 to 20")])
+    password = fields.String(required=False, validate=[validate.Length(min=8,max=20,error="Password length must be between 8 to 20")])
+    image = fields.String(required=False, validate=[validate.Length(1,255)])
+    address = fields.String(required=False, validate=[validate.Length(1,255)])
+    phone = fields.String(required=False, validate=[validate_phone,validate.Length(10,13)])
+
 
 
 class TaskSchema(ma.Schema):

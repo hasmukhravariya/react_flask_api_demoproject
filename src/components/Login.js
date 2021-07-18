@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { GoogleLogin } from 'react-google-login';
 // refresh token
 import { refreshTokenSetup } from '../utils/refreshToken';
+import axios from "axios";
 
 const clientId =
   '26093647913-g8j9tn1n623u0ub1umbebaen76qjh886.apps.googleusercontent.com';
@@ -10,19 +11,34 @@ const clientId =
 function Login() {
   const history = useHistory();
   const onSuccess = (res) => {
-    console.log('Login Success: currentUser:', res.profileObj);
-    refreshTokenSetup(res);
     const user={
-      email:false,
-      google:true,
-      data:res.profileObj
+      type:"google",
+      user:{
+        name:res.profileObj.name,
+        email:res.profileObj.email,
+        image:res.profileObj.imageUrl
+      }
     }
-    localStorage.setItem('user', JSON.stringify(user))
-    // console.log(this.props)
-    history.push({
-        pathname:  "/home",
-        state: res.profileObj
-     });
+    console.log(user)
+    axios.post(`/api/register`,  user )
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        if(res.data.status===true){
+          const loggeduser={
+            email:false,
+            google:true,
+            data:res.data.result
+          }
+          localStorage.setItem('user', JSON.stringify(loggeduser))
+          history.push({
+            pathname:  "/home"
+         });
+        }
+        else{
+          alert(JSON.stringify(res.data.errors));
+        }
+      })
   };
 
   const onFailure = (res) => {

@@ -23,6 +23,11 @@ function LoginForm(props){
 
     const handleSubmit = event => {
       event.preventDefault();
+      const data={
+        type:"email",
+        user:user
+      }
+      console.log(data)
       axios.post(`/api/login`,  user )
         .then(res => {
           console.log(res);
@@ -70,10 +75,10 @@ function LoginForm(props){
 
             <button type="submit" className="btn btn-dark btn-lg btn-block">Sign in</button>
             
-            <div class="or-container">
-              <div class="line-separator"></div>
-              <div class="or-label">or</div>
-              <div class="line-separator"></div>
+            <div className="or-container">
+              <div className="line-separator"></div>
+              <div className="or-label">or</div>
+              <div className="line-separator"></div>
             </div>
 
             <Login/>

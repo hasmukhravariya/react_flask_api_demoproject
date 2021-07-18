@@ -142,17 +142,17 @@ export default function BootstrapTable({ data }) {
 
   return (
     <>
-      <tr id="table_filters" className="d-flex justify-content-end">
-        <th className="filter" >
+      <div id="table_filters" className="d-flex justify-content-end">
+        <div className="filter" >
            Creater: {headerGroups[0].headers[2].render('Filter')}
-        </th>
-        <th className="filter">
+        </div>
+        <div className="filter">
           Assigned: {headerGroups[0].headers[3].render('Filter')}
-        </th>
-        <th className="filter">
+        </div>
+        <div className="filter">
           Status: {headerGroups[0].headers[5].render('Filter')}
-        </th>
-      </tr>
+        </div>
+      </div>
       <BTable id="table" striped hover size="sm" bordered {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (

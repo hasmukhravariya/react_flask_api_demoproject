@@ -31,7 +31,11 @@ function Register(props){
 
   const handleSubmit = event => {
     event.preventDefault();
-    axios.post(`/api/register`,  state )
+    const user={
+      type:"email",
+      user:state
+    }
+    axios.post(`/api/register`,  user )
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -70,7 +74,7 @@ function Register(props){
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Body>
-        <form class="register_form_wrapper" onSubmit={handleSubmit}>
+        <form className="register_form_wrapper" onSubmit={handleSubmit}>
             <center><h3>Register User</h3></center>
 
             <div className="form-group">
