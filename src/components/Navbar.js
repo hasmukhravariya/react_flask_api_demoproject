@@ -17,7 +17,7 @@ import { useHistory } from "react-router";
 const NavigationBar = props => {
 
   let page=props.page;
-  let name, email, username, image, gettasksData, loggedInUser;
+  let name, email, username, image, gettasksData;
 
   if(page!=="loginPage"){
     const loggedInUser = JSON.parse(localStorage.getItem("user"));

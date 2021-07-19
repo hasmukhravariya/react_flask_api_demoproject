@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from "react-router";
 import { GoogleLogin } from 'react-google-login';
 // refresh token
-import { refreshTokenSetup } from '../utils/refreshToken';
+// import { refreshTokenSetup } from '../utils/refreshToken';
 import axios from "axios";
 
 const clientId =
@@ -43,9 +43,6 @@ function Login() {
 
   const onFailure = (res) => {
     console.log('Login failed: res:', res);
-    alert(
-      `Failed to login.`
-    );
   };
 
   return (

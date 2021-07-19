@@ -92,6 +92,18 @@ code {
   margin-left: 30px;
 }
 
+Button.login_link {
+  background:none;
+  border:none; 
+}
+
+
+Button.login_link:hover,Button.login_link:focus{
+  background:none;
+  text-decoration: underline;
+  box-shadow: none;
+}
+
 /* NavBar  */
 
 
