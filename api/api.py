@@ -1,9 +1,21 @@
-from config import app, db
-from flask import request  
+from config import app, db, UPLOAD_FOLDER
+from flask import request, render_template, send_from_directory 
 from passlib.hash import sha256_crypt
 from models import Task, User
 from schemas import TaskSchema, UserSchema
 import phonenumbers
+import re
+import os 
+from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
+from datetime import datetime
+
+CORS(app)
+cors=CORS(app, resources={
+    r"/*":{
+        "origins":"http://localhost:3000"
+    }
+})
 
 task_schema = TaskSchema()
 tasks_schema = TaskSchema(many=True)
@@ -26,6 +38,15 @@ def validate_username(value):
     else:
         return False
 
+def validate_password(value):
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+    pat = re.compile(reg)
+    mat = re.search(pat, value)
+    if mat:
+        return True
+    else:
+        return False
+
 def register_user(value):
     error=user_schema.validate(value)
     if error:
@@ -41,11 +62,16 @@ def register_user(value):
     db.session.add(hasheduser)
     db.session.commit()
     data=UserSchema(exclude=["password"]).dump(hasheduser)
+    if hasheduser.password is None:
+        data['password']=False
+    else:
+         data['password']=True
     result={"status": True, "result":data}
     return result
 
 def update_user(data,user,id):
     # data=request.json['data']
+    del data['password']
     if data['phone'] is not None:
         temp,phone=validate_phone(data['phone'])
         if temp:
@@ -54,6 +80,10 @@ def update_user(data,user,id):
                 setattr(user, k, v)
             db.session.commit()
             result=UserSchema(exclude=['password']).dump(User.query.get(id))
+            if user.password is None:
+                result['password']=False
+            else:
+                 result['password']=True
             return {"status":True,"user":result}
         else:
              return {"status":False,"errors":"Phone Number is not valid for country India"}
@@ -62,6 +92,10 @@ def update_user(data,user,id):
             setattr(user, k, v)
         db.session.commit()
         result=UserSchema(exclude=['password']).dump(User.query.get(id))
+        if user.password is None:
+            result['password']=False
+        else:
+             result['password']=True
         return {"status":True,"user":result}
 
 
@@ -109,6 +143,10 @@ def add_user():
             status,result=User.checkemail(user['email'])
             if status:
                 data=user_schema.dump(result)
+                if data['password'] is None:
+                    data['password']=False
+                else:
+                    data['password']=True
                 return {"status":True,"result": data}
             else:
                 return register_user(request.json['user'])
@@ -134,6 +172,7 @@ def check_user():
             else:
                 if (sha256_crypt.verify(password,temp['password'])):
                     result=UserSchema(exclude=['password']).dump(temp)
+                    result['password']=True
                     return {"status":True,"result": result}
                 else:
                     return {"status":False,"error": "Invalid Password"}
@@ -159,40 +198,68 @@ def user_op(id):
         else:
             data=request.json['data']
             return update_user(data,user,id)
-            # if data['phone'] is not None:
-            #     temp,phone=validate_phone(data['phone'])
-            #     if temp:
-            #         data['phone']=phone
-            #         for k, v in data.items():
-            #             setattr(user, k, v)
-            #         db.session.commit()
-            #         result=UserSchema(exclude=['password']).dump(User.query.get(id))
-            #         return {"status":True,"user":result}
-            #     else:
-            #          return {"status":False,"errors":"Phone Number is not valid for country India"}
-            # else:
-            #     for k, v in data.items():
-            #         setattr(user, k, v)
-            #     db.session.commit()
-            #     result=UserSchema(exclude=['password']).dump(User.query.get(id))
-            #     return {"status":True,"user":result}
+        
 
-
-
-
-
-@app.route('/api/setusername/<int:id>', methods=['POST'])
-def set_username(id):
+@app.route('/api/setpassword/<int:id>', methods=['POST'])
+def set_password(id):
     if request.method=="POST":
         user=User.query.get(id)
         if user is None:
             return {"status":False,"errors":"Id Not present in the database"}
         else:
-            username=request.json['username']
-            if validate_username(username):
-                user.username=username
-                db.session.commit()
-                result=UserSchema(exclude=['password']).dump(User.query.get(id))
-                return {"status":True,"user":result}
+            if user.password is not None:
+                oldpassword=request.json['oldpassword']
+                newpassword=request.json['newpassword']
+                if (sha256_crypt.verify(oldpassword,user.password)):
+                    if validate_password(newpassword):
+                        hashedpassword = sha256_crypt.hash(newpassword)
+                        user.password=hashedpassword
+                        db.session.commit()
+                        result=UserSchema(exclude=['password']).dump(User.query.get(id))
+                        result["password"]=True
+                        return {"status":True,"user":result}
+                    else:
+                        return {"status":False, "errors":"Password should have at least one numeral,one uppercase letter,one lowercase letter,one of the symbols $@#"}
+                else:
+                    return {"status":False, "errors":"Old Password do not match"}
             else:
-                return {"status":False,"errors":"username already taken"}
+                newpassword=request.json['newpassword']
+                if validate_password(newpassword):
+                    hashedpassword = sha256_crypt.hash(newpassword)
+                    user.password=hashedpassword
+                    db.session.commit()
+                    result=UserSchema(exclude=['password']).dump(User.query.get(id))
+                    result["password"]=True
+                    return {"status":True,"user":result}
+                else:
+                    return {"status":False, "errors":"Password should have at least one numeral,one uppercase letter,one lowercase letter,one of the symbols $@#"}
+
+            
+@app.route('/api/upload', methods=['POST'])
+def fileUpload():
+    target = os.path.join(app.config['UPLOAD_FOLDER'])
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    file = request.files['file'] 
+    data=request.form['id']+".png"
+    filename = secure_filename(data)
+    destination="/".join([target,filename])
+    file.save(destination)
+    user=User.query.get(request.form['id'])
+    image="http://localhost:5000/api/image/"+request.form['id']
+    user.image=image
+    db.session.commit()
+    result=UserSchema(exclude=['password']).dump(user)
+    if user.password is None:
+        result['password']=False
+        result['image']=result['image']+str(datetime.now())
+    else:
+         result['password']=True
+         result['image']=result['image']+"?"+str(datetime.now())
+    return {"status":True,"user":result}
+
+@app.route('/api/image/<int:id>')
+def serve(id):
+    filename=str(id)+".png"
+    return send_from_directory(UPLOAD_FOLDER, filename)
+

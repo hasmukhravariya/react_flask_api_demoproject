@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
 
 function Register(props){
   const history = useHistory();
@@ -60,13 +61,6 @@ function Register(props){
         }
         else{
           alert(JSON.stringify(res.data.errors));
-          // let type=typeof res.data.errors
-          // if(type==="string"){
-          //   alert(JSON.stringify(res.data.errors));
-          //   changeModel()
-          // }else{
-          //   alert(JSON.stringify(res.data.errors.password));
-          // }
         }
       })
     }
@@ -95,14 +89,14 @@ function Register(props){
             <div className="form-group">
                 <label>Password</label>
                 <input type="password" name="password" className="form-control" placeholder="Enter password" onChange={handleInputChange} required/>
-                {/*<small id="passwordHelpBlock" class="form-text text-muted">
-                  Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-                </small>*/}
+                <small id="passwordHelpBlock" class="form-text text-muted">
+                  Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, one of the symbols $@#.
+                </small>
             </div>
 
             <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
             <p className="forgot-password text-right">
-                Already registered <a href="#" onClick={changeModel}>login?</a>
+                Already registered <Button className="login_link" onClick={changeModel}>login?</Button>
             </p>
         </form>
       </Modal.Body>

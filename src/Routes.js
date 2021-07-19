@@ -23,7 +23,6 @@ const Routes = () => (
       <Route path="/userprofile">
         <UserProfile />
       </Route>
-
     </Switch>
     </Router>
   </div>
