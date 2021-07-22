@@ -2,10 +2,12 @@
   "name": "react-flask-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "apollo-datasource-rest": "^3.0.2",
     "axios": "^0.21.1",
     "bootstrap": "5.0.2",
     "bootstrap-icons": "^1.5.0",
@@ -31,6 +33,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start-api": "cd api && venv/bin/flask run --no-debugger",
+    "start-apollo":"cd apollo_server && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

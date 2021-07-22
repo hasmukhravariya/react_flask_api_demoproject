@@ -1,0 +1,124 @@
+type user {
+    id: ID!,
+    name:String!,
+    email:String!,
+    username:String,
+    password:String,
+    image:String,
+    address:String,
+    phone: String
+  }
+
+  type task {
+    id: ID!,
+    title:String!,
+    creater:String!,
+    assigned:String,
+    description:String,
+    status:TaskStatus,
+  }
+
+  type Query {
+    users: [user]
+    tasks: tasksresult
+    task(id:ID!):taskresult
+  }
+
+  type taskresult {
+    status:Boolean,
+    msg:String,
+    task: task 
+  }
+
+  type checkuserresult {
+    status: String,
+    error: String,
+    result: user
+  }
+
+  type tasksresult {
+    status:Boolean,
+    task: [task] 
+  }
+
+  enum TaskStatus {
+    Open,
+    Hold,
+    In Progress,
+    Closed
+  }
+
+  input taskcreater {
+    title:String!,
+    creater:String!,
+    assigned:String,
+    description:String,
+    status:TaskStatus,
+  }
+
+  input checkinuser{
+    email:String!,
+    password:String!,
+  }
+
+  type createTaskResult{
+    status:Boolean,
+    errors:String,
+    task:task
+  }
+
+  input createUserFields{
+    name:String!,
+    email:String!,
+    username:String,
+    password:String,
+  }
+
+  input createUserdata{
+    type:String,
+    user: createUserFields!
+  }
+  type createUserResult{
+    status:Boolean,
+    errors:String,
+    result: user
+  }
+
+  input updateUserData{
+    data:updateUserFields
+  }
+  input updateUserFields{
+    id: ID!,
+    name:String,
+    email:String,
+    username:String=null,
+    password:Boolean=true,
+    image:String,
+    address:String,
+    phone: String
+  }
+  type updateUserResult{
+    status:Boolean,
+    errors:String,
+    user: user
+  }
+
+  input setPasswordData{
+    id:ID!,
+    oldpassword:String=null,
+    newpassword:String
+  }
+
+  type setPasswordResult{
+    status:Boolean,
+    errors:String,
+    user: user
+  }
+
+  type Mutation {
+    checkUser(input:checkinuser!): checkuserresult
+    createTask(input: taskcreater!): createTaskResult
+    createUser(input: createUserdata!): createUserResult
+    updateUser(input: updateUserData!): updateUserResult
+    setPassword(input: setPasswordData!): setPasswordResult
+  }
