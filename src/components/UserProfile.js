@@ -96,6 +96,7 @@ export default function UserProfile(props){
             google:user.google,
             data:res.data.user
           }
+          console.log(res.data)
           localStorage.setItem('user', JSON.stringify(result))
           setPasswordcontainer(false);
           setSubmit(false)
@@ -111,6 +112,7 @@ export default function UserProfile(props){
           }));
         }
         else{
+          console.log(res.data)
           alert(JSON.stringify(res.data.errors));
         }
       })
@@ -121,10 +123,15 @@ export default function UserProfile(props){
     if(loggedInUser.data.username===null && user.data.username===null){
       user.data.username=userName
     }
-    console.log(user)
-    axios.patch(`/api/users/${user.data.id}`,  user )
+    // console.log(user)
+    const data={
+      data:user.data
+     } 
+     console.log(data)
+    axios.patch(`/api/users/${user.data.id}`,  data )
       .then(res => {
         if(res.data.status===true){
+          console.log(res.data)
           const result={
             email:user.email,
             google:user.google,

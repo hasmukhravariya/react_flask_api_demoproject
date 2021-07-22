@@ -33,11 +33,11 @@ function TaskRegister(props){
       "description": task.description,
       "status": task.status
     };
-    // console.log(new_task)
+    console.log(new_task)
     axios.post(`/api/tasks`,  new_task )
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        // console.log(res);
+        // console.log(res.data);
         if(res.data.status===true){
           props.onCloseModal()
           setTask({

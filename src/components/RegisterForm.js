@@ -36,9 +36,10 @@ function Register(props){
       type:"email",
       user:state
     }
+    console.log(user)
     axios.post(`/api/register`,  user )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         console.log(res.data);
         if(res.data.status===true){
           props.onCloseModal()
