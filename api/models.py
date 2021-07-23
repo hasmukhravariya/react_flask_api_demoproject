@@ -1,4 +1,5 @@
 from config import db
+# import enum
 
 class Task(db.Model): 
     __tablename__='task' 
@@ -25,6 +26,13 @@ class Task(db.Model):
     def gettaskbyid(id):
         return Task.query.get(id) 
 
+
+# class Gender(enum.Enum):
+#     Male = "Male"
+#     Female = "Female"
+#     others="others"
+
+
 class User(db.Model): 
     __tablename__='users' 
     id = db.Column(db.Integer, primary_key = True)  
@@ -35,6 +43,7 @@ class User(db.Model):
     image = db.Column(db.String(255))
     address = db.Column(db.String(255))
     phone = db.Column(db.String(13))
+    # gender =db.Column(db.Enum(Gender))
 
     def __init__(self, name, email, username=None, password=None, image=None, address=None, phone=None):
         self.name = name

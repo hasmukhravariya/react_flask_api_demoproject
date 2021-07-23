@@ -9,7 +9,7 @@ const LogoutHooks=forwardRef((props, ref)=> {
   const history = useHistory();
 
   const onLogoutSuccess = (res) => {
-    console.log('Logged out Success');
+    // console.log('Logged out Success');
     localStorage.clear();
     history.push({
         pathname:  "/"
@@ -17,7 +17,7 @@ const LogoutHooks=forwardRef((props, ref)=> {
   };
 
   const onFailure = () => {
-    console.log('Handle failure cases');
+    // console.log('Handle failure cases');
   };
 
   const { signOut } = useGoogleLogout({

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -11,6 +12,7 @@
     "axios": "^0.21.1",
     "bootstrap": "5.0.2",
     "bootstrap-icons": "^1.5.0",
+    "graphql": "^15.5.1",
     "i": "^0.3.6",
     "match-sorter": "6.3.0",
     "namor": "^2.0.3",
@@ -21,6 +23,7 @@
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-hamburger-menu": "^1.2.1",
+    "react-query": "^3.19.0",
     "react-responsive-modal": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -33,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start-api": "cd api && venv/bin/flask run --no-debugger",
-    "start-apollo":"cd apollo_server && node server.js",
+    "start-apollo": "cd apollo_server && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

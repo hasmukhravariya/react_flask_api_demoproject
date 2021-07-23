@@ -3,13 +3,63 @@ import { useHistory } from "react-router";
 import { GoogleLogin } from 'react-google-login';
 // refresh token
 // import { refreshTokenSetup } from '../utils/refreshToken';
-import axios from "axios";
+import { gql, useMutation } from '@apollo/client';
 
 const clientId =
   '26093647913-g8j9tn1n623u0ub1umbebaen76qjh886.apps.googleusercontent.com';
 
+
+const USER_REGISTER = gql`
+  mutation($createUserInput: createUserdata!){
+    createUser(input: $createUserInput) {
+      status,
+      errors,
+      result {
+        id,
+        email,
+        name,
+        username,
+        password,
+        image,
+        address,
+        phone
+      }
+    }
+  }
+`;
+
+
 function Login() {
   const history = useHistory();
+
+  const [createUser] = useMutation(USER_REGISTER,{
+    onCompleted({ createUser }) {
+      if (createUser) {
+        // console.log(createUser)
+        check(createUser)
+      }
+    },
+    onError: (error) => console.error("Error", error),
+  });
+
+  const check=(input)=>{
+    // console.log(input)
+    if(input.status===true){
+      const loggeduser={
+        email:false,
+        google:true,
+        data:input.result
+      }
+      localStorage.setItem('user', JSON.stringify(loggeduser))
+      history.push({
+        pathname:  "/home"
+     });
+    }
+    else{
+      alert(JSON.stringify(input.errors));
+    }
+  }
+
   const onSuccess = (res) => {
     const user={
       type:"google",
@@ -19,26 +69,14 @@ function Login() {
         image:res.profileObj.imageUrl
       }
     }
-    console.log(user)
-    axios.post(`/api/register`,  user )
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        if(res.data.status===true){
-          const loggeduser={
-            email:false,
-            google:true,
-            data:res.data.result
-          }
-          localStorage.setItem('user', JSON.stringify(loggeduser))
-          history.push({
-            pathname:  "/home"
-         });
-        }
-        else{
-          alert(JSON.stringify(res.data.errors));
-        }
-      })
+    // console.log(user)
+    const send={
+      variables: { 
+        createUserInput: user
+      }
+    }
+    // console.log(send)
+    createUser(send);
   };
 
   const onFailure = (res) => {

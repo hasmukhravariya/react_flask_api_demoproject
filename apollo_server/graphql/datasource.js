@@ -17,7 +17,7 @@ export class API extends RESTDataSource {
       status:response.status,
       task:response.tasks 
     }
-    return result
+    return response.tasks
   }
 
   async getTask(id){

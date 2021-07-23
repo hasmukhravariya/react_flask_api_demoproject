@@ -15,12 +15,12 @@ type user {
     creater:String!,
     assigned:String,
     description:String,
-    status:TaskStatus,
+    status:String,
   }
 
   type Query {
     users: [user]
-    tasks: tasksresult
+    tasks: [task]
     task(id:ID!):taskresult
   }
 
@@ -31,7 +31,7 @@ type user {
   }
 
   type checkuserresult {
-    status: String,
+    status: Boolean,
     error: String,
     result: user
   }
@@ -42,9 +42,9 @@ type user {
   }
 
   enum TaskStatus {
-    Open,
-    Hold,
-    In Progress,
+    Open
+    Hold
+    In Progress
     Closed
   }
 
@@ -72,6 +72,7 @@ type user {
     email:String!,
     username:String,
     password:String,
+    image: String,
   }
 
   input createUserdata{
@@ -92,7 +93,7 @@ type user {
     name:String,
     email:String,
     username:String=null,
-    password:Boolean=true,
+    password:String="true",
     image:String,
     address:String,
     phone: String
