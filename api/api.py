@@ -1,5 +1,5 @@
 from config import app, db, UPLOAD_FOLDER
-from flask import request, render_template, send_from_directory 
+from flask import request, render_template, send_from_directory, jsonify 
 from passlib.hash import sha256_crypt
 from models import Task, User
 from schemas import TaskSchema, UserSchema
@@ -8,7 +8,6 @@ import re
 import os 
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
-from datetime import datetime
 
 CORS(app)
 cors=CORS(app, resources={
@@ -70,8 +69,8 @@ def register_user(value):
     return result
 
 def update_user(data,user,id):
-    # data=request.json['data']
-    del data['password']
+    if data['password'] is not None:
+        del data['password']
     if data['phone'] is not None:
         temp,phone=validate_phone(data['phone'])
         if temp:
@@ -135,6 +134,14 @@ def get_task_byId(num):
             result={"status": True,"task":task_schema.dump(task)}
             return result
 
+@app.route('/api/users')
+def get_users():
+    if request.method=="GET":
+        data=User.getallusers()
+        tasks=UserSchema(partial=True, many=True).dump(data)
+        result={"users":tasks}
+        return result
+
 @app.route('/api/register', methods=['POST','GET'])
 def add_user():
     if request.method=="POST":
@@ -171,7 +178,7 @@ def check_user():
                 return {"status":False,"error": "User registered with google Account! Login with Google Button"}
             else:
                 if (sha256_crypt.verify(password,temp['password'])):
-                    result=UserSchema(exclude=['password']).dump(temp)
+                    result=UserSchema(exclude=['password'],partial=True).dump(temp)
                     result['password']=True
                     return {"status":True,"result": result}
                 else:
@@ -252,10 +259,8 @@ def fileUpload():
     result=UserSchema(exclude=['password']).dump(user)
     if user.password is None:
         result['password']=False
-        result['image']=result['image']+str(datetime.now())
     else:
          result['password']=True
-         result['image']=result['image']+"?"+str(datetime.now())
     return {"status":True,"user":result}
 
 @app.route('/api/image/<int:id>')

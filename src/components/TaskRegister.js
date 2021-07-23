@@ -1,11 +1,28 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
 import Modal from "react-bootstrap/Modal"
 import { useHistory } from "react-router";
+import { gql, useMutation } from '@apollo/client';
+
+
+const TASK_REGISTER = gql`
+  mutation($createTaskInput: taskcreater!){
+    createTask(input: $createTaskInput) {
+      status,
+      errors,
+      task {
+        id
+      }
+    }
+  }
+`;
 
 function TaskRegister(props){
   
+  const Props = Object.assign({}, props);
+  delete Props.CloseModal;
+  delete Props.gettasksData;
+
   const history = useHistory();
   const[task,setTask]=useState({
     title: '',
@@ -14,6 +31,39 @@ function TaskRegister(props){
     description: '',
     status: 'Open'
   });
+
+
+  const [createTask] = useMutation(TASK_REGISTER,{
+    onCompleted({ createTask }) {
+      if (createTask) {
+        // console.log(createUser)
+        check(createTask)
+      }
+    },
+    onError: (error) => console.error("Error", error),
+  });
+
+  const check=(input)=>{
+    // console.log(input);
+    if(input.status===true){
+      props.CloseModal()
+      setTask({
+        title: '',
+        creater: '',
+        assigned: '',
+        description: '',
+        status: 'Open'
+      })
+      if(props.page==="homePage"){
+        props.gettasksData()
+      }else{
+        history.push("/home")
+      }
+    }
+    else{
+      alert(JSON.stringify(input.errors));
+    }
+  }
 
   const handleInputChange = (event) => {
       const { name, value } = event.target;
@@ -34,35 +84,18 @@ function TaskRegister(props){
       "status": task.status
     };
     // console.log(new_task)
-    axios.post(`/api/tasks`,  new_task )
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        if(res.data.status===true){
-          props.onCloseModal()
-          setTask({
-            title: '',
-            creater: '',
-            assigned: '',
-            description: '',
-            status: 'Open'
-          })
-          if(props.page==="homePage"){
-            props.gettasksData()
-          }else{
-            history.push("/home")
-          }
-        }
-        else{
-          alert(JSON.stringify(res.data.errors));
-        }
-      })
+    const send={
+      variables: { 
+        createTaskInput: new_task
+      }
     }
-    // console.log(props.name)
-    // console.log(task)
+    // console.log(send)
+    createTask(send)
+  }
+
 
     return (
-      <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal {...Props} aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Body>
           <form className="task_form_wrapper" onSubmit={handleSubmit}>
               <center><h3>Task Form</h3></center>
@@ -89,8 +122,8 @@ function TaskRegister(props){
 
               <div className="form-group">
                   <label>Status</label>
-                  <select class="browser-default custom-select" name="status" onChange={handleInputChange}>
-                    <option value="Open" selected>Open</option>
+                  <select defaultValue="Open" className="browser-default custom-select" name="status" onChange={handleInputChange}>
+                    <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Hold">Hold</option>
                     <option value="Closed">Closed</option>

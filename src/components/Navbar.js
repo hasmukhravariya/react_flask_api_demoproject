@@ -22,19 +22,17 @@ const NavigationBar = props => {
   if(page!=="loginPage"){
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
     if( loggedInUser.data.image==null ){
-      image=<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150"/>
+      image=<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
     }else{
-      image=<img src={loggedInUser.data.image} alt="Admin" class="rounded-circle" width="150"/>
+      image=<img src={loggedInUser.data.image} alt="Admin" className="rounded-circle" width="150"/>
     }
     name=loggedInUser.data.name
     email=loggedInUser.data.email
     username=loggedInUser.data.username
     gettasksData=props.gettasksData;
   }
-
-  const childRef = useRef();
   const history = useHistory();
-
+  const childRef = useRef();
   const[login,setLogin]=useState(false);
   const[register,setRegister]=useState(false);
   const[task,setTask]=useState(false)
@@ -65,7 +63,7 @@ const NavigationBar = props => {
   
   const viewUser=()=>{
     history.push({
-        pathname: "/userprofile"
+        pathname: "/userprofile",
      });
   }
 
@@ -73,15 +71,15 @@ const NavigationBar = props => {
     <Popover id="popover-bottom">
       <Popover.Title as="h3">User Profile</Popover.Title>
       <Popover.Content>
-        <div class="pop-card">
-          <div class="pop-card-body">
-            <div class="d-flex flex-column align-items-center text-center">
+        <div className="pop-card">
+          <div className="pop-card-body">
+            <div className="d-flex flex-column align-items-center text-center">
               {image}
-              <div class="mt-3">
+              <div className="mt-3">
                 <h4>{name}</h4>
-                <p class="text-secondary mb-1">{email}</p>
-                <p class="text-muted font-size-sm">{username}</p>
-                <button onClick={viewUser} class="btn btn-secondary">View Profile</button>
+                <p className="text-secondary mb-1">{email}</p>
+                <p className="text-muted font-size-sm">{username}</p>
+                <button onClick={viewUser} className="btn btn-secondary">View Profile</button>
                 <button onClick={() => { childRef.current.Success() }} className="btn btn-secondary margin_sides">Logout</button>
               </div>
             </div>
@@ -126,10 +124,10 @@ const NavigationBar = props => {
         {page==="loginPage"? loginpage : homepage}
         </Nav>
       </Navbar>
-      <LoginForm size="sm" show={login} onHide={onLoginCloseModal} onCloseModal={onLoginCloseModal}/>
-      <RegisterForm show={register} onHide={onRegisterCloseModal} onCloseModal = {onRegisterCloseModal} openLogin={onLoginOpenModal}/>
+      <LoginForm size="sm" show={login} onHide={onLoginCloseModal} CloseModal={onLoginCloseModal}/>
+      <RegisterForm show={register} onHide={onRegisterCloseModal} CloseModal = {onRegisterCloseModal} openLogin={onLoginOpenModal}/>
       <LogoutHooks ref={childRef}/>
-      <TaskRegister show={task} onHide={onTaskCloseModal} name={name} page={page} onCloseModal = {onTaskCloseModal} gettasksData={gettasksData}/>
+      <TaskRegister show={task} onHide={onTaskCloseModal} name={name} page={page} CloseModal = {onTaskCloseModal} gettasksData={gettasksData}/>
     </>
   );
 }

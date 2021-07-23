@@ -95,6 +95,7 @@ code {
 Button.login_link {
   background:none;
   border:none; 
+  color: blue;
 }
 
 
@@ -102,6 +103,7 @@ Button.login_link:hover,Button.login_link:focus{
   background:none;
   text-decoration: underline;
   box-shadow: none;
+  color: blue;
 }
 
 /* NavBar  */

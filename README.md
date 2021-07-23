@@ -14,6 +14,22 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+### `yarn start-api`
+
+Runs the Flask Api in the development mode.\
+Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see errors in the console.
+
+### `yarn start-apollo`
+
+Runs the apollo server in the development mode.\
+Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
+
+The page will not reload if you make edits.\
+You will have to stop and restart the server to see changes.
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\

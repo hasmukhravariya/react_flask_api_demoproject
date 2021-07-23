@@ -1,35 +1,42 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "./Table";
 import Navbar from "./Navbar"
+import { useQuery, gql } from "@apollo/client";
+
+const TASKS_QUERY = gql`
+  {
+    tasks {
+      id,
+      assigned,
+      title,
+      status,
+      description
+      creater
+    }
+  }
+`;
 
 const Home = props => {
-
-  const[state,setState]=useState({
-        tasks: [],
-        loading: true,
-      });
-
-  const gettasksData=()=> {
-    axios.get("/api/tasks").then(res=>{
-      setState({
-        tasks: res.data.tasks,
-        loading: false,
-      })
-    })
+  const [Data, setData] = useState([]);
+  const { data, refetch } = useQuery(TASKS_QUERY);
+  
+  const gettasksData =() => {
+    refetch()
   }
-
+  
   useEffect(() => {
-       gettasksData()
-       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    
+    if(data){
+      refetch()
+      setData(data.tasks)
+    }
+  }, [data, refetch]);
+
   return (
     <div id="App" >
       <Navbar page="homePage" gettasksData={gettasksData}/>
       <div>
         <center><h3 id="home_body_heading">Task Table</h3></center>
-        <Table data={state.tasks}/>
+        <Table data={Data}/>
       </div>
     </div>
   );

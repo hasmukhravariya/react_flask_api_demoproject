@@ -3,6 +3,13 @@ from config import ma
 from models import User
 import phonenumbers
 import re
+# import enum
+# from marshmallow_enum import EnumField
+
+# class Gender(enum.Enum):
+#     "Male" 
+#     "Female"
+#     "others"
 
 class UserSchema(ma.Schema):
     def validate_email(value):
@@ -45,6 +52,7 @@ class UserSchema(ma.Schema):
     image = fields.String(required=False, validate=[validate.Length(1,255)])
     address = fields.String(required=False, validate=[validate.Length(1,255)])
     phone = fields.String(required=False, validate=[validate_phone,validate.Length(10,13)])
+    # gender = EnumField(Gender)
 
 
 
