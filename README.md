@@ -35,6 +35,11 @@ You will have to stop and restart the server to see changes.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `yarn test-apollo`
+
+Launches the test runner in the apollo_server folder and tests server.test.js.\
+
+
 ### `yarn build`
 
 Builds the app for production to the `build` folder.\

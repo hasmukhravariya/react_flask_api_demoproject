@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import { gql, useMutation } from '@apollo/client';
 
-const USER_REGISTER = gql`
+export const USER_REGISTER = gql`
   mutation($createUserInput: createUserdata!){
     createUser(input: $createUserInput) {
       status,
@@ -43,7 +43,7 @@ function Register(props){
         check(createUser)
       }
     },
-    onError: (error) => console.error("Error", error),
+    // onError: (error) => console.error("Error", error),
   });
 
   const check=(input)=>{
@@ -112,30 +112,30 @@ function Register(props){
 
             <div className="form-group">
                 <label>Name</label>
-                <input type="text" name="name" className="form-control" placeholder="Name" onChange={handleInputChange} required />
+                <input type="text" name="name" aria-label="name" value={state.name} className="form-control" placeholder="Name" onChange={handleInputChange} required />
             </div>
 
             <div className="form-group">
                 <label>Username</label>
-                <input type="text" name="username" className="form-control" placeholder="Username" onChange={handleInputChange} required />
+                <input type="text" name="username" aria-label="username" value={state.username} className="form-control" placeholder="Username" onChange={handleInputChange} required />
             </div>
 
             <div className="form-group">
                 <label>Email</label>
-                <input type="email" name="email" className="form-control" placeholder="Enter email" onChange={handleInputChange} required  />
+                <input type="email" name="email" aria-label="email" value={state.email} className="form-control" placeholder="Enter email" onChange={handleInputChange} required  />
             </div>
 
             <div className="form-group">
                 <label>Password</label>
-                <input type="password" name="password" className="form-control" placeholder="Enter password" onChange={handleInputChange} required/>
+                <input type="password" name="password" aria-label="password" value={state.password} className="form-control" placeholder="Enter password" onChange={handleInputChange} required/>
                 <small id="passwordHelpBlock" className="form-text text-muted">
                   Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, one of the symbols $@#.
                 </small>
             </div>
 
-            <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
+            <button type="submit" aria-label="register" className="btn btn-dark btn-lg btn-block">Register</button>
             <p className="forgot-password text-right">
-                Already Registered?<Button className="login_link"  varaint="secondary" onClick={changeModel}>Login</Button>
+                Already Registered?<Button aria-label="login" className="login_link"  varaint="secondary" onClick={changeModel}>Login</Button>
             </p>
         </form>
       </Modal.Body>

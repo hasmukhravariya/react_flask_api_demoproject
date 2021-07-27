@@ -1,7 +1,7 @@
-import { ApolloServer, gql } from 'apollo-server';
-import { API } from './graphql/datasource.js';
-import fs from "fs";
-import { resolvers } from "./graphql/resolvers/index.js"
+const { ApolloServer, gql }=require('apollo-server');
+const API = require('./graphql/datasource.js');
+const fs =require("fs");
+const resolvers =require("./graphql/resolvers/index.js")
 
 const typeDefs = gql(fs.readFileSync('./graphql/typeDefs.graphql',{encoding:'utf-8'}));
 

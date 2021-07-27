@@ -5,7 +5,7 @@ import Login from "./Login";
 import Modal from "react-bootstrap/Modal"
 import { gql, useMutation } from '@apollo/client';
 
-const CHECK_USER = gql`
+export const CHECK_USER = gql`
   mutation($checkUserInput: checkinuser!){
     checkUser(input: $checkUserInput) {
       status,
@@ -97,12 +97,12 @@ function LoginForm(props){
 
             <div className="form-group">
                 <label>Email/Username</label>
-                <input className="form-control" type="text" name="email" placeholder="Enter email/username" onChange={handleInputChange} required />
+                <input aria-label="email" className="form-control" value={user.email} type="text" name="email" placeholder="Enter email/username" onChange={handleInputChange} required />
             </div>
 
             <div className="form-group">
                 <label>Password</label>
-                <input className="form-control" type="password" name="password" placeholder="Enter password" onChange={handleInputChange} required />
+                <input aria-label="password" className="form-control" value={user.password} type="password" name="password" placeholder="Enter password" onChange={handleInputChange} required />
             </div>
 
             <button type="submit" className="btn btn-dark btn-lg btn-block">Sign in</button>

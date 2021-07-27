@@ -2,19 +2,23 @@
   "name": "react-flask-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@apollo/client": "^3.3.21",
+    "@apollo/react-testing": "^4.0.0",
+    "@react-mock/localstorage": "^0.1.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "apollo-datasource-rest": "^3.0.2",
+    "apollo-server": "^3.0.2",
+    "apollo-server-testing": "^2.25.2",
     "axios": "^0.21.1",
     "bootstrap": "5.0.2",
     "bootstrap-icons": "^1.5.0",
     "graphql": "^15.5.1",
     "i": "^0.3.6",
     "match-sorter": "6.3.0",
+    "msw": "^0.33.0",
     "namor": "^2.0.3",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
@@ -23,6 +27,7 @@
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-hamburger-menu": "^1.2.1",
+    "react-mock": "^6.0.1",
     "react-query": "^3.19.0",
     "react-responsive-modal": "^6.1.0",
     "react-router-dom": "^5.2.0",
@@ -31,6 +36,7 @@
     "react-table-v6": "^6.8.6",
     "reactjs-localstorage": "^1.0.1",
     "styled-components": "^5.3.0",
+    "waait": "^1.0.5",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -39,6 +45,7 @@
     "start-apollo": "cd apollo_server && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test-apollo": "cd apollo_server && jest server.test.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
