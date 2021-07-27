@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import { gql, useMutation } from '@apollo/client';
 
 
-const TASK_REGISTER = gql`
+export const TASK_REGISTER = gql`
   mutation($createTaskInput: taskcreater!){
     createTask(input: $createTaskInput) {
       status,
@@ -39,8 +39,7 @@ function TaskRegister(props){
         // console.log(createUser)
         check(createTask)
       }
-    },
-    onError: (error) => console.error("Error", error),
+    }
   });
 
   const check=(input)=>{
@@ -102,27 +101,27 @@ function TaskRegister(props){
 
               <div className="form-group">
                   <label>Title</label>
-                  <input type="text" name="title" className="form-control" placeholder="Title" onChange={handleInputChange} required/>
+                  <input type="text" aria-label="title" name="title" className="form-control" placeholder="Title" onChange={handleInputChange} required/>
               </div>
 
               <div className="form-group">
                   <label>Creater</label>
-                  <input type="text" name="creater" className="form-control" value={props.name} onChange={handleInputChange} disabled/>
+                  <input type="text" aria-label="creater" name="creater" className="form-control" value={props.name} onChange={handleInputChange} disabled/>
               </div>
 
               <div className="form-group">
                   <label>Assigned</label>
-                  <input type="text" name="assigned" className="form-control" placeholder="Assigned" onChange={handleInputChange} required />
+                  <input type="text" aria-label="assigned" name="assigned" className="form-control" placeholder="Assigned" onChange={handleInputChange} required />
               </div>
 
               <div className="form-group">
                   <label>Description</label>
-                  <input type="text" name="description" className="form-control" placeholder="Enter Description" onChange={handleInputChange} required />
+                  <input type="text" aria-label="description" name="description" className="form-control" placeholder="Enter Description" onChange={handleInputChange} required />
               </div>
 
               <div className="form-group">
                   <label>Status</label>
-                  <select defaultValue="Open" className="browser-default custom-select" name="status" onChange={handleInputChange}>
+                  <select defaultValue="Open" aria-label="status" className="browser-default custom-select" name="status" onChange={handleInputChange}>
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Hold">Hold</option>

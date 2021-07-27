@@ -79,8 +79,8 @@ const NavigationBar = props => {
                 <h4>{name}</h4>
                 <p className="text-secondary mb-1">{email}</p>
                 <p className="text-muted font-size-sm">{username}</p>
-                <button onClick={viewUser} className="btn btn-secondary">View Profile</button>
-                <button onClick={() => { childRef.current.Success() }} className="btn btn-secondary margin_sides">Logout</button>
+                <button onClick={viewUser} aria-label="view_profile" className="btn btn-secondary">View Profile</button>
+                <button onClick={() => { childRef.current.Success() }} aria-label="logout" className="btn btn-secondary margin_sides">Logout</button>
               </div>
             </div>
           </div>
@@ -94,10 +94,10 @@ const NavigationBar = props => {
       <OverlayTrigger trigger='click' rootClose placement="bottom" overlay={popover}>
         <Navbar.Text>
           Signed in as:
-          <Button className="link" variant="secondary">{name}</Button>
+          <Button aria-label="user_profile" className="link" variant="secondary">{name}</Button>
         </Navbar.Text>
       </OverlayTrigger>
-      <Button variant="secondary" className="margin_sides" onClick={onTaskOpenModal}>Add Task</Button>
+      <Button variant="secondary" aria-label="add_task" className="margin_sides" onClick={onTaskOpenModal}>Add Task</Button>
       <DropdownButton id="dropdown-item-button" variant="secondary" title="" alignRight >
         <Dropdown.Item onClick={onTaskOpenModal}>Add Task</Dropdown.Item>
         <Dropdown.Item onClick={viewUser} >View Profile</Dropdown.Item>

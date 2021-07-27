@@ -1,6 +1,6 @@
-import { RESTDataSource } from 'apollo-datasource-rest';
+const { RESTDataSource } =require('apollo-datasource-rest');
 
-export class API extends RESTDataSource {
+class API extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = 'http://127.0.0.1:5000/api/';
@@ -13,10 +13,6 @@ export class API extends RESTDataSource {
 
   async getAllTasks() {
     const response = await this.get('tasks');
-    const result={
-      status:response.status,
-      task:response.tasks 
-    }
     return response.tasks
   }
 
@@ -86,3 +82,5 @@ export class API extends RESTDataSource {
   }
 
 };
+
+module.exports=API;

@@ -5,7 +5,7 @@ import LogoutHooks from "./LogoutHooks"
 import { gql, useMutation } from '@apollo/client';
 
 
-const USER_UPDATE = gql`
+export const USER_UPDATE = gql`
   mutation($updateUserInput: updateUserData!){
     updateUser(input: $updateUserInput) {
       status,
@@ -24,7 +24,7 @@ const USER_UPDATE = gql`
   }
 `;
 
-const SET_PASSWORD = gql`
+export const SET_PASSWORD = gql`
   mutation($setPasswordInput: setPasswordData!){
     setPassword(input: $setPasswordInput) {
       status,
@@ -97,8 +97,7 @@ export default function UserProfile(props){
         // console.log(createUser)
         checkUpdate(updateUser)
       }
-    },
-    onError: (error) => console.error("Error", error),
+    }
   });
 
   const checkUpdate=(input)=>{
@@ -286,7 +285,7 @@ export default function UserProfile(props){
   if(usernamepresent){
     usernameElement=<input type="text" className="form-control" name="username" value={userName} onChange={handleUsernameChange} disabled={user.data.username?true:false}/>
   }else{
-    usernameElement= <input type="button" className="btn btn-secondary px-4" onClick={() => { setUsernamePresent(true)}} value="Set Username"/>
+    usernameElement= <button type="button" className="btn btn-secondary px-4" onClick={() => { setUsernamePresent(true)}}>Set Username</button>
   }
 
   const currentpassword=()=>{
@@ -335,7 +334,7 @@ export default function UserProfile(props){
     <div className="main-body">
       <nav aria-label="breadcrumb" className="main-breadcrumb" id="userprofile-breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item"><a href="/home">Home</a></li>
+          <li className="breadcrumb-item"><a aria-label="home" href="/home">Home</a></li>
           <li className="breadcrumb-item active" aria-current="page">User Profile</li>
         </ol>
       </nav>
@@ -389,7 +388,7 @@ export default function UserProfile(props){
                   <h6 className="mb-0">Phone</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                  <input type="text" className="form-control" name="phone" value={user.data.phone} onChange={handleInputChange}/>
+                  <input type="text" className="form-control" name="phone" aria-label="phone" value={user.data.phone} onChange={handleInputChange}/>
                 </div>
               </div>
               <div className="row mb-3">
@@ -397,7 +396,7 @@ export default function UserProfile(props){
                   <h6 className="mb-0">Address</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                  <input type="text" className="form-control" name="address" value={user.data.address} onChange={handleInputChange}/>
+                  <input type="text" className="form-control" aria-label="address" name="address" value={user.data.address} onChange={handleInputChange}/>
                 </div>
               </div>
               <div className="row mb-3">
@@ -412,7 +411,7 @@ export default function UserProfile(props){
               <div className="row mb-3">
                 <div className="col-sm-3"></div>
                 <div className="col-sm-9 text-secondary">
-                  <input type="button" className="btn btn-secondary px-4" onClick={handleSubmit} value="Save Changes" disabled={!save?true:false}/>
+                  <input type="button" aria-label="save" className="btn btn-secondary px-4" onClick={handleSubmit} value="Save Changes" disabled={!save?true:false}/>
                 </div>
               </div>
             </div>

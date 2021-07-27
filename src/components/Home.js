@@ -3,7 +3,7 @@ import Table from "./Table";
 import Navbar from "./Navbar"
 import { useQuery, gql } from "@apollo/client";
 
-const TASKS_QUERY = gql`
+export const TASKS_QUERY = gql`
   {
     tasks {
       id,
@@ -18,12 +18,12 @@ const TASKS_QUERY = gql`
 
 const Home = props => {
   const [Data, setData] = useState([]);
-  const { data, refetch } = useQuery(TASKS_QUERY);
+  const { loading, error, data, refetch } = useQuery(TASKS_QUERY);
   
   const gettasksData =() => {
     refetch()
   }
-  
+
   useEffect(() => {
     if(data){
       refetch()
@@ -31,6 +31,9 @@ const Home = props => {
     }
   }, [data, refetch]);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
+  
   return (
     <div id="App" >
       <Navbar page="homePage" gettasksData={gettasksData}/>
