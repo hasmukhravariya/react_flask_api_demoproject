@@ -16,6 +16,7 @@
     "bootstrap": "5.0.2",
     "bootstrap-icons": "^1.5.0",
     "graphql": "^15.5.1",
+    "graphql-upload": "^12.0.0",
     "i": "^0.3.6",
     "match-sorter": "6.3.0",
     "msw": "^0.33.0",
@@ -45,7 +46,7 @@
     "start-apollo": "cd apollo_server && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test-apollo": "cd apollo_server && jest server.test.js",
+    "test-apollo": "cd apollo_server && jest server.test.js datasource.test.js resolver.test.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

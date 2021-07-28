@@ -1,4 +1,4 @@
-const { API } =require('../datasource.js');
+// const { API } =require('../datasource.js');
 
 const Query= {
     users: (root, args, { dataSources }) => dataSources.API.getAllUsers(),
