@@ -1,5 +1,5 @@
 const { ApolloServer, gql }=require('apollo-server');
-const API = require('./graphql/datasource.js');
+const API = require('./graphql/DataSource/datasource.js');
 const fs =require("fs");
 const resolvers =require("./graphql/resolvers/index.js")
 

@@ -8,7 +8,7 @@ class API extends RESTDataSource {
 
   async getAllUsers() {
     const response = await this.get('users');
-    return response.users
+    return response
   }
 
   async getAllTasks() {

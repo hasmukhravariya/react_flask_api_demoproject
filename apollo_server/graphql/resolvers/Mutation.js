@@ -1,4 +1,4 @@
-const { API } =require('../datasource.js');
+const API =require('../DataSource/datasource.js');
 
 const Mutation={
     checkUser:(root, { input }, { dataSources })=>dataSources.API.checkUser(input),
