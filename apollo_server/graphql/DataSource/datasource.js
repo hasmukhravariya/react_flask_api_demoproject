@@ -1,5 +1,8 @@
 const { RESTDataSource } =require('apollo-datasource-rest');
 const { finished } = require('stream/promises');
+const FormData  = require('form-data');
+const rawBody =require('raw-body');
+const fetch =require('node-fetch');
 
 class API extends RESTDataSource {
   constructor() {
@@ -104,19 +107,24 @@ class API extends RESTDataSource {
     return result
   }
 
-  async uploadImage(input){
-    const { createReadStream, filename, mimetype, encoding } = await input.file;
-    const stream = createReadStream();
-    const out = require('fs').createWriteStream('local-file-output.png');
-    stream.pipe(out);
-    await finished(out);
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data"
-      }
-    };
-    const link="upload"
-    return { filename, mimetype, encoding };
+  async uploadImage(input,id){
+    const { createReadStream, filename, mimetype, encoding } = await input.file;  
+    const file=await input.file;
+    const buffer=await rawBody(file.createReadStream())
+    const form = new FormData();
+    form.append('file', buffer, {
+      filename: file.filename,
+      contentType: file.mimetype,
+      knownLength: buffer.length
+    });
+    form.append('id',id);
+    const response=await this.post('upload',form)
+    const result={
+      status:response.status,
+      errors:response.errors,
+      user:response.user 
+    }
+    return result;
   }
 
 };

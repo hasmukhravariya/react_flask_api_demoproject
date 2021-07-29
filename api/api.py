@@ -270,24 +270,29 @@ def set_password(id):
             
 @app.route('/api/upload', methods=['POST'])
 def fileUpload():
-    target = os.path.join(app.config['UPLOAD_FOLDER'])
-    if not os.path.isdir(target):
-        os.mkdir(target)
-    file = request.files['file'] 
-    data=request.form['id']+".png"
-    filename = secure_filename(data)
-    destination="/".join([target,filename])
-    file.save(destination)
     user=User.query.get(request.form['id'])
-    image="http://localhost:5000/api/image/"+request.form['id']
-    user.image=image
-    db.session.commit()
-    result=UserSchema(exclude=['password']).dump(user)
-    if user.password is None:
-        result['password']=False
+    if user is None:
+        return {"status":False,"errors":"Id Not present in the database"}
     else:
-         result['password']=True
-    return {"status":True,"user":result}
+        target = os.path.join(app.config['UPLOAD_FOLDER'])
+        if not os.path.isdir(target):
+            os.mkdir(target)
+        # print(request.form)
+        file = request.files['file'] 
+        data=request.form['id']+".png"
+        filename = secure_filename(data)
+        destination="/".join([target,filename])
+        file.save(destination)
+        user=User.query.get(request.form['id'])
+        image="http://localhost:5000/api/image/"+request.form['id']
+        user.image=image
+        db.session.commit()
+        result=UserSchema(exclude=['password']).dump(user)
+        if user.password is None:
+            result['password']=False
+        else:
+             result['password']=True
+        return {"status":True,"user":result}
 
 @app.route('/api/image/<int:id>')
 def serve(id):

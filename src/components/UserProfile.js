@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from "react";
-import axios from "axios";
 import Navbar from "./Navbar"
 import LogoutHooks from "./LogoutHooks"
 import { gql, useMutation } from '@apollo/client';
@@ -43,6 +42,25 @@ export const SET_PASSWORD = gql`
   }
 `;
 
+export const CHANGE_PIC = gql`
+  mutation($file: Upload!, $id: ID!){
+    singleUpload(file: $file, id: $id) {
+      status,
+      errors,
+      user {
+        id,
+        name,
+        email,
+        username,
+        password,
+        image,
+        address,
+        phone
+      }
+    }
+  }
+`;
+
 
 export default function UserProfile(props){
 
@@ -51,6 +69,7 @@ export default function UserProfile(props){
   const [user, setUser] = useState({
       email: false,
       google: false,
+      imageHash: Date.now(),
       data:{}
     });
   const [password, setPassword] = useState({
@@ -74,6 +93,7 @@ export default function UserProfile(props){
         ...prevState,
         email: loggedUser.email,
         google: loggedUser.google,
+        imageHash: Date.now(),
         data: loggedUser.data
     }));
     if(loggedUser.data.username){
@@ -87,7 +107,7 @@ export default function UserProfile(props){
   if(user.data.image==null ){
     image=<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
   }else{
-    image=<img src={user.data.image} alt="Admin" className="rounded-circle" width="150"/>
+    image=<img src={`${user.data.image}?${user.imageHash}`} alt="Admin" className="rounded-circle" width="150"/>
   }
 
 
@@ -107,6 +127,7 @@ export default function UserProfile(props){
       const result={
         email:user.email,
         google:user.google,
+        imageHash: Date.now(),
         data:input.user
       }
       localStorage.setItem('user', JSON.stringify(result))
@@ -115,6 +136,7 @@ export default function UserProfile(props){
           ...prevState,
           email: user.email,
           google: user.google,
+          imageHash: Date.now(),
           data: input.user
       }));
     }
@@ -137,6 +159,7 @@ export default function UserProfile(props){
       const result={
         email:user.email,
         google:user.google,
+        imageHash: Date.now(),
         data:input.user
       }
       localStorage.setItem('user', JSON.stringify(result))
@@ -150,6 +173,7 @@ export default function UserProfile(props){
           ...prevState,
           email: user.email,
           google: user.google,
+          imageHash: Date.now(),
           data: input.user
       }));
     }
@@ -243,42 +267,45 @@ export default function UserProfile(props){
     ref.current.value = "";
   };
 
+
+  const [changeimage] = useMutation(CHANGE_PIC,{
+    onCompleted:(changeimage)=>checkUpload(changeimage.singleUpload),
+    onError: (error) => console.error("Error", error),
+  });
+
+  const checkUpload=(input)=>{
+    // console.log(input)
+    if(input.status===true){
+      const result={
+        email:user.email,
+        google:user.google,
+        imageHash: Date.now(),
+        data:input.user
+      }
+      localStorage.setItem('user', JSON.stringify(result))
+      setUser((prevState) => ({
+          ...prevState,
+          email: user.email,
+          google: user.google,
+          imageHash: Date.now(),
+          data: input.user
+      }));
+      setImageUpload({ raw: "" })
+      reset()
+    }
+    else{
+      alert(JSON.stringify(input.errors));
+    }
+  } 
+
   const handleUpload =(e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("file", imageUpload.raw);
-    formData.append('id', user.data.id);
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data"
-      }
-    };
-    console.log(imageUpload.raw)
-    axios.post('/api/upload', formData, config)
-      .then((res) => {
-        console.log(res)
-        if(res.data.status===true){
-          const result={
-            email:user.email,
-            google:user.google,
-            data:res.data.user
-          }
-          localStorage.setItem('user', JSON.stringify(result))
-          setUser((prevState) => ({
-              ...prevState,
-              email: user.email,
-              google: user.google,
-              data: res.data.user
-          }));
-          setImageUpload({ raw: "" })
-          reset()
-        }
-        else{
-          alert(JSON.stringify(res.data.errors));
-        }
-        
-      })
-
+    const file = imageUpload.raw;
+    const id=user.data.id
+    const send={
+      variables: { file, id }
+    }
+    changeimage(send)
   };
 
   if(usernamepresent){

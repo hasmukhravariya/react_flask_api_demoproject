@@ -24,7 +24,7 @@ const NavigationBar = props => {
     if( loggedInUser.data.image==null ){
       image=<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
     }else{
-      image=<img src={loggedInUser.data.image} alt="Admin" className="rounded-circle" width="150"/>
+      image=<img src={`${loggedInUser.data.image}?${loggedInUser.imageHash}`} alt="Admin" className="rounded-circle" width="150"/>
     }
     name=loggedInUser.data.name
     email=loggedInUser.data.email
