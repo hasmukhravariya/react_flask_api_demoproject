@@ -187,6 +187,9 @@ Button.link:hover,Button.link:focus{
   margin-left: 50px;
 }
 
+.pagination {
+  padding: 0.5rem;
+}
 
 /* User Profile Page */
 

@@ -116,10 +116,41 @@ type user {
     user: user
   }
 
+  input updateTaskData{
+    id:ID!,
+    title:String!,
+    creater:String!,
+    assigned:String,
+    description:String,
+    status:TaskStatus, 
+  }
+
+  type updateTaskResult{
+    status:Boolean!,
+    errors:String,
+    msg:String,
+    task: task
+  }
+
+  type deleteTaskResult {
+    status: Boolean!,
+    msg: String
+  }
+
+  scalar Upload
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
   type Mutation {
     checkUser(input:checkinuser!): checkuserresult
     createTask(input: taskcreater!): createTaskResult
     createUser(input: createUserdata!): createUserResult
     updateUser(input: updateUserData!): updateUserResult
     setPassword(input: setPasswordData!): setPasswordResult
+    updateTask(input: updateTaskData!): updateTaskResult
+    deleteTask(input: ID!): deleteTaskResult
+    singleUpload(file: Upload!): File!
   }

@@ -80,7 +80,8 @@ const columns = [
     }
   ];
 
-export default function BootstrapTable({ data }) {
+export default function BootstrapTable( props ) {
+  const data=props.data
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -177,7 +178,7 @@ export default function BootstrapTable({ data }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} onClick={() => props.OpenModel(row.original)}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -188,7 +189,7 @@ export default function BootstrapTable({ data }) {
           })}
         </tbody>
       </BTable>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {"<<"}
         </button>{" "}

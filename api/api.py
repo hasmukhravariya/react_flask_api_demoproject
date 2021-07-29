@@ -134,6 +134,32 @@ def get_task_byId(num):
             result={"status": True,"task":task_schema.dump(task)}
             return result
 
+    if request.method=="PATCH":
+        task=Task.gettaskbyid(num)
+        if task is None:
+            return {"status":False,"msg":"Id Not present in the database"}
+        else:
+            data=request.json
+            del data['id']
+            error=task_schema.validate(data)
+            if error:
+                return {"status":False,"errors": error}
+            for k, v in data.items():
+                setattr(task, k, v)
+            db.session.commit()
+            result={"status": True,"task":task_schema.dump(task)}
+            return result
+
+    if request.method=="DELETE":
+        task=Task.gettaskbyid(num)
+        if task is None:
+            return {"status":False,"msg":"Id Not present in the database"}
+        else:
+            db.session.delete(task)
+            db.session.commit()
+            return {"status":True,"msg":"Task Deleted"}
+
+
 @app.route('/api/users')
 def get_users():
     if request.method=="GET":
@@ -267,4 +293,3 @@ def fileUpload():
 def serve(id):
     filename=str(id)+".png"
     return send_from_directory(UPLOAD_FOLDER, filename)
-

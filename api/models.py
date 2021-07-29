@@ -24,7 +24,10 @@ class Task(db.Model):
         return Task.query.all()
 
     def gettaskbyid(id):
-        return Task.query.get(id) 
+        return Task.query.get(id)
+    def deletetaskbyid(id):
+        task=Task.query.get(id)
+        return True  
 
 
 # class Gender(enum.Enum):
