@@ -8,7 +8,7 @@ const Mutation={
     setPassword:(root, { input }, { dataSources })=>dataSources.API.setPassword(input),
     updateTask:(root, { input }, { dataSources })=>dataSources.API.updateTask(input),
     deleteTask:(root, { input }, { dataSources })=>dataSources.API.deleteTask(input),
-    singleUpload: async (root, { file }, {dataSources}) => dataSources.API.uploadImage(file), 
+    singleUpload: async (root, { file, id }, {dataSources}) => dataSources.API.uploadImage(file,id), 
 }
 
 module.exports=Mutation
