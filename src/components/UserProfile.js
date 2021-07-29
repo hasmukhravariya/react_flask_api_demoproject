@@ -185,8 +185,7 @@ export default function UserProfile(props){
       if(password.newpassword!==""){
         setSubmit(true)
       }
-    }
-    
+    }    
   };
 
   const handleUsernameChange = (event) => {
@@ -254,7 +253,7 @@ export default function UserProfile(props){
         "content-type": "multipart/form-data"
       }
     };
-
+    console.log(imageUpload.raw)
     axios.post('/api/upload', formData, config)
       .then((res) => {
         console.log(res)

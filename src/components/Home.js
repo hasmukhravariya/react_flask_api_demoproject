@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "./Table";
 import Navbar from "./Navbar"
 import { useQuery, gql } from "@apollo/client";
+import TaskUpdate from "./TaskUpdate"
 
 export const TASKS_QUERY = gql`
   {
@@ -18,8 +19,20 @@ export const TASKS_QUERY = gql`
 
 const Home = props => {
   const [Data, setData] = useState([]);
+  const [taskData, setTaskData]=useState();
+  const[task,setTask]=useState(false)
   const { loading, error, data, refetch } = useQuery(TASKS_QUERY);
   
+
+  const onTaskOpenModal = (data) => {
+    setTaskData(data)
+    setTask(true);
+  };
+
+  const onTaskCloseModal = () => {
+    setTask(false);
+  };
+
   const gettasksData =() => {
     refetch()
   }
@@ -39,8 +52,9 @@ const Home = props => {
       <Navbar page="homePage" gettasksData={gettasksData}/>
       <div>
         <center><h3 id="home_body_heading">Task Table</h3></center>
-        <Table data={Data}/>
+        <Table data={Data} OpenModel={onTaskOpenModal} />
       </div>
+      <TaskUpdate show={task} onHide={onTaskCloseModal} CloseModal = {onTaskCloseModal}  data={taskData} gettasksData={gettasksData}/>
     </div>
   );
 }
