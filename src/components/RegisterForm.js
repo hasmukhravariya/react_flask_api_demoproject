@@ -100,7 +100,7 @@ function Register(props){
         createUserInput: user
       }
     }
-    // console.log(send)
+    console.log(send)
     createUser(send)
     }
 
