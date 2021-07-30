@@ -30,7 +30,7 @@ describe('Server Test', () => {
 
     const { data: { tasks } } = await query({ query: TASKS });
 
-    expect(tasks[0]).toEqual({ id: "1", title: "React Testing library" });
+    expect(tasks[0]).toEqual({ id: "21", title: "Give" });
   });
 
 

@@ -186,6 +186,7 @@ describe("UserProfile Page test", () => {
     		const temp={
     			email: false,
 				google: true,
+				imageHash:"",
 				data: {
 					"id": "3",
 			        "phone": "7021656536",
@@ -197,7 +198,10 @@ describe("UserProfile Page test", () => {
 			        "image": "https://lh3.googleusercontent.com/a/AATXAJytw9wkZG5Frd35_RS5K1ISrLo3VCypLj86PHK9=s96-c"
 				}
     		}
-    		expect(localStorage.getItem('user')).toBe(JSON.stringify(temp));
+    		const result=localStorage.getItem('user');
+    		const obj=JSON.parse(result)
+    		temp.imageHash=obj.imageHash;
+    		expect(JSON.stringify(obj)).toBe(JSON.stringify(temp));
     	})
   	});
 

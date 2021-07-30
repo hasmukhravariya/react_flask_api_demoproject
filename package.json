@@ -49,6 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-apollo": "cd apollo_server && jest server.test.js datasource.test.js resolver.test.js",
+    "test-api": "cd api && venv/bin/pytest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
