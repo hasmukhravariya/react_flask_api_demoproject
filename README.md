@@ -37,7 +37,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `yarn test-apollo`
 
-Launches the test runner in the apollo_server folder and tests server.test.js.\
+Launches the test runner in the apollo_server folder and tests test folders\
+
+### `yarn test-api`
+
+Launches the pytest test runner in the api folder and test cases\
 
 
 ### `yarn build`
